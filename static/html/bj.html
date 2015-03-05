@@ -1,0 +1,108 @@
+{% extends "newmain.html" %} 
+{% block css %} 
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+{% block js %} 
+<script type="text/javascript" src="/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript"
+	src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+</script>
+{% endblock %} 
+{% block javascript %}
+<script language="javascript" type="text/javascript">
+	$(document).ready(function() { 
+		$("#newBtn").bind("click", function(){ 
+ 			$("#tab1").append("<tr><td><input id=\"sd\" type=\"checkbox\" /></td><td><input type=\"text\" name=\"date\" class=\"Wdate\" onclick=\"WdatePicker()\" style=\"height: 30px;\"></input></td><td><textarea name=\"content\" rows=\"2\"></textarea></td><td><select name=\"lb\" class=\"span1\" onchange=\"com(this)\"><option>D1</option><option>D2</option><option>D3</option><option>D4</option><option>D5</option></select></td><td><select name=\"num\" class=\"span1\" onchange=\"com(this)\"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></td><td><input type=text  name=\"total\" style=\"height: 30px; width: 100px;\" value=\"NA\" readonly=\"readonly\" /></td></tr>"); 
+		}); 
+
+		$("#delBtn").bind("click", function(){ 
+  			$("input:checked").parent().parent().remove(); 
+		}); 
+	}); 
+
+	function getRowObj(obj) {
+		var i = 0;
+		while (obj.tagName.toLowerCase() != "tr") {
+			obj = obj.parentNode;
+			if (obj.tagName.toLowerCase() == "table")
+				return null;
+		}
+		return obj;
+	}
+	function com(obj) {
+		var td=0;
+		var trObj = getRowObj(obj);
+		var trArr = trObj.parentNode.children;
+		for ( var trNo = 0; trNo < trArr.length; trNo++) {
+			if (trObj == trObj.parentNode.children[trNo]) {
+				td=trNo;
+			}
+		}
+		if (document.getElementsByName("lb")[td].value == "D1") {
+			document.getElementsByName("total")[td].value = 1500 * document
+					.getElementsByName("num")[td].value;
+		} else if (document.getElementsByName("lb")[td].value == "D2") {
+			document.getElementsByName("total")[td].value = 1000 * document
+					.getElementsByName("num")[td].value;
+		} else
+			document.getElementsByName("total")[td].value = 0;
+	}
+</script>
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+<h2 style="text-align:center;POSITION: relative">金斯瑞报价系统</h2>
+	<form name="form1" method="post" action="/cmdb/bj/" >
+				<table id="tab1" class="table table-striped table-bordered table-hover table-condensed">
+					<thead>
+						<tr>
+							<th >选择</th>
+							<th >日期</th>
+							<th >工作</th>
+							<th >种类</th>
+							<th >数目</th>
+							<th >总价</th>
+						</tr>
+					</thead>
+					<tr>
+						<td><input id="sd" type="checkbox" /></td>
+						<td>
+     						<input type="text" class="Wdate" name="date" onclick="WdatePicker()" style="height: 30px;"></input>
+						</td>
+						<td><textarea name="content" rows="2"></textarea></td>
+						<td><select name="lb" class="span1" onclick="com(this)">
+								<option>D1</option>
+								<option>D2</option>
+								<option>D3</option>
+								<option>D4</option>
+								<option>D5</option>			
+							</select>
+						</td>
+						<td><select name="num" class="span1" onchange="com(this)">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>			
+							</select>
+						</td>
+						<td><input type=text  name="total" style="height: 30px; width: 100px;" value="NA" readonly="readonly" /></td>
+						
+					</tr>
+					
+				</table>
+				<table class="table table-striped table-bordered table-hover table-condensed">
+					<tr>
+						<td align="right">
+						<input type="button" name="Submit" value="增加一行"  class="btn btn-info"  id="newBtn" />
+					    <input type="button" name="Submit" value="删除一行" class="btn btn-info"  id="delBtn" />
+					    <button class="btn btn-primary" style="border-left-width: 0px; padding-left: 12px; margin-left: 850px;">提交</button>
+					    </td>
+					</tr>
+				</table>
+	</form>
+</div>
+{% endblock %} 

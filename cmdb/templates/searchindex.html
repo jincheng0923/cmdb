@@ -1,0 +1,158 @@
+{% extends "modhead.html" %} {% block title %}综合搜索
+{%endblock %}
+{% block content %}
+<div class="content ">
+    <div>
+    <form action="/cmdb/zhsearch/" method="post" class="form-horizontal"
+          role="form" style="margin-top: 100px; margin-left: 200px;">
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">搜索：</label>
+
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="searchinfo"
+                       placeholder="Input what you want search for">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-6">
+                    <label class="radio-inline"> <input type="radio" name="isipfilter"
+                                   id="optionsRadios1" value="true" checked="checked">I&nbsp;P&nbsp;查询 </label>
+                    <label class="radio-inline" style="margin-left: 100px;"> <input type="radio" name="isipfilter"
+                                   id="optionsRadios2" value="false"> 其他查询 </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-6">
+                <button type="submit" class="btn btn-info">确认提交</button>
+            </div>
+        </div>
+    </form>
+    </div>
+    <div style="margin-top: 50px;">
+        {% if users or vms or domains or sub_domains %}
+        <div>
+            <h2 class="text-center">搜索结果</h2>
+        </div>
+        {% endif %}
+        {% if users %}
+        <div>
+            <p class="text-center text-info">用户信息</p>
+        </div>
+        <div>
+            <table class="table table-hover" id="usertable">
+                <thead>
+                <tr>
+                    <th>IP</th>
+                    <th>User</th>
+                    <th>Password</th>
+                    <th>Type</th>
+                    <th>info</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.user_ip }}</td>
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.user_password }}</td>
+                    <td>{{ user.user_device }}</td>
+                    <td>{{ user.user_info }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+        {% if vms %}
+        <div>
+            <p class="text-center text-info">虚拟机信息</p>
+        </div>
+        <div>
+            <table class="table table-hover" id="vmtable">
+                <thead>
+                <tr>
+                    <th>IP</th>
+                    <th>HOSTNAME</th>
+                    <th>SYSTEM</th>
+                    <th>Manager</th>
+                    <th>DESCRIBLE</th>
+                    <th>INFO</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for vm in vms %}
+                <tr>
+                    <td>{{ vm.vm_ip }}</td>
+                    <td>{{ vm.vm_hostname }}</td>
+                    <td>{{ vm.vm_system }}</td>
+                    <td>{{ vm.vm_manager }}</td>
+                    <td>{{ vm.vm_describe }}</td>
+                    <td>{{ vm.vm_info }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        {% endif %}
+        {% if domains %}
+        <div>
+            <p class="text-center text-info">一级域名信息</p>
+        </div>
+        <div>
+            <table class="table table-hover" id="vmtable">
+                <thead>
+                <tr>
+                    <th>域名</th>
+                    <th>过期日期</th>
+                    <th>供应商信息</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for domain in domains %}
+                <tr>
+                    <td>{{ domain.domain_name }}</td>
+                    <td>{{ domain.domain_expiration }}</td>
+                    <td><a target="_blank" href="{{ domain.domain_supplylink }}">{{ domain.domain_supply }}</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        {% endif %}
+        {% if sub_domains %}
+        <div>
+            <p class="text-center text-info">二级域名信息</p>
+        </div>
+        <div>
+            <table class="table table-hover" id="vmtable">
+                <thead>
+                <tr>
+                    <th>二级域名</th>
+                    <th>一级域名</th>
+                    <th>映射IP</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for s_domains in sub_domains %}
+                <tr>
+                    <td>{{ s_domains.sub_domain_name }}</td>
+                    <td>{{ s_domains.sub_domain_domain }}</td>
+                    <td>{{ s_domains.sub_domain_ip }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

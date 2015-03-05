@@ -1,0 +1,69 @@
+{% extends "modhead.html"%}{%block title%}工作日志列表{% endblock%}
+{% block js %} 
+<script type="text/javascript" src="/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %} 
+{% block content %}
+	<div class="content col-md-offset-1 col-md-10 " style="margin-top: 20px;">
+		<form name="getmonthrecords" method="get" action="/cmdb/outputrecords" class="form-horizontal"role="form">
+		<table class="table table-striped table-condensed">
+					<tr>
+						<td><p class="text-center text-warning"> 开始时间</p></td>
+						<td>
+     						<input type="text" class="Wdate" name="stdate" onclick="WdatePicker()" style="height: 30px;"></input>
+						</td>
+						<td><p class="text-center text-warning"> 结束时间</p></td>
+						<td>
+     						<input type="text" class="Wdate" name="eddate" onclick="WdatePicker()" style="height: 30px;"></input>
+						</td>
+						<td >
+					    <button class="btn btn-primary" style="border-left-width: 0px; padding-left: 12px; margin-left: 100px;">导出报表</button>
+					    </td>
+					</tr>
+		</table>
+	 	</form>
+		<table id="tab1" class="table table-condensed table-hover shadow">
+			<thead>
+				<tr>
+					<th>日期</th>
+					<th>内容</th>
+					<th>一级类别</th>
+					<th>二级类别</th>
+					<th>用时</th>
+					<th>备注</th>
+				</tr>
+			</thead>
+			{% for work in works %}
+			<tr>
+				<td>{{ work.dailywork_date }} &nbsp;</td>
+				<td>{{ work.dailywork_content }} &nbsp;</td>
+				<td>{{ work.dailywork_type }} &nbsp;</td>
+				<td>{{ work.dailywork_subtype }} &nbsp;</td>
+				<td>{{ work.dailywork_cost }} &nbsp;</td>
+				<td>{{ work.dailywork_info }} &nbsp;</td>
+			</tr>
+			{% endfor %}
+		</table>
+	<ul class="pager">
+		{% if Destation_Page == 1 %}
+			<li class="previous disabled ">
+			<a href="#">&larr; Previous</a>
+		{% else %}
+			<li class="previous">
+			<a href="?p={{Previous_Page}}">&larr; Previous</a>
+		{% endif %}
+		</li>
+		<li >
+			<a >当前{{ Destation_Page }}&nbsp;页，共计{{ pages }}&nbsp;页</a>
+		</li>
+		{% if Destation_Page == pages %}
+			<li class="next disabled">
+			<a href="#">Next &rarr;</a>
+		{% else %}
+			<li class="next">
+			<a href="?p={{Next_Page}}">Next &rarr;</a>
+		{% endif %}
+		</li>
+	</ul>
+</div>
+{% endblock %}

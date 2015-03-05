@@ -1,0 +1,137 @@
+{% extends "modhead.html" %}
+{% block title %}
+每日工作日志
+{% endblock%}
+{% block css %}
+<link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+{% block js %}
+<script type="text/javascript" src="/static/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+{% endblock %}
+{% block javascript %}
+<script language="javascript" type="text/javascript">
+	$(document).ready(function() {
+		$("#newBtn").bind("click", function(){
+ 			$("#tab1").append("<tr><td><input id=\"sd\" type=\"checkbox\" /></td><td>" +
+			" <input type=\"text\" class=\"Wdate\" name=\"date\" onclick=\"WdatePicker()\" " +
+			"style=\"height: 30px;\"></input></td><td><textarea name=\"content\" rows=\"2\"></textarea>" +
+			"</td><td style=\"width: 150px;\"><select name=\"type\" class=\"form-control\" onchange=\"getsublist(this)\">" +
+			"<OPTION >请选择大类 </OPTION><option>系统部署</option><option>日常检查</option><option>供应商管理</option><option>日常维护</option>" +
+			"<option>故障处理</option><option>新项目工作</option><option>文档维护</option><option>部门工作</option></select></td><td style=\"width: 150px;\"><select name=\"subtype\" " +
+			"class=\"form-control\" ><option>具体任务类型</option>" +
+			"</select></td><td style=\"width: 100px;\"><div class=\"input-group\"><input type=\"text\"" +
+			" name=\"costname\" value=\"1\" class=\"form-control\"><span class=\"input-group-addon\">h</span>" +
+			"</div></td><td><textarea name=\"info\" rows=\"2\"></textarea></td></tr>");
+		});
+
+		$("#delBtn").bind("click", function(){
+  			$("input:checked").parent().parent().remove();
+		});
+	});
+
+	function getRowObj(obj) {
+		var i = 0;
+		while (obj.tagName.toLowerCase() != "tr") {
+			obj = obj.parentNode;
+			if (obj.tagName.toLowerCase() == "table")
+				return null;
+		}
+		return obj;
+	}
+	function getsublist(obj) {
+		var sublist=[
+			["Gearman","SCM","CRM","BIO","Other"],
+			["备份","Drsite","监控","机房"],
+			["费用咨询","服务器维护"],
+			["网络设备","存储设备","生物信息","Gearman","SCM","CSCM","JSCM","CRM","OA","Exchange","前台网站","AD","网络","域名","机房","VPS"],
+			["网络设备","存储设备","生物信息","Gearman","SCM","CSCM","JSCM","CRM","OA","Exchange","前台网站","AD","网络","域名","机房","VPS"],
+			["分布式文件系统","透明代理","日志中心","运维自动化","机房改造","邮件升级","杀毒软件"],
+			["SOP","GP"],
+		    ["部门会议","组内会议","培训学习","人员招聘"]
+			];
+		var td=0;
+		var trObj = getRowObj(obj);
+		var trArr = trObj.parentNode.children;
+		for ( var trNo = 0; trNo < trArr.length; trNo++) {
+			if (trObj == trObj.parentNode.children[trNo]) {
+				td=trNo;
+			}
+		}
+		var sltProvince = document.getElementsByName("type")[td];
+		var sltCity=  document.getElementsByName("subtype")[td];
+        var provinceCity=sublist[sltProvince.selectedIndex - 1];
+        sltCity.length=1;
+         for(var i=0;i<provinceCity.length;i++){
+             sltCity[i+1]=new Option(provinceCity[i],provinceCity[i]);
+         }
+     }
+</script>
+{% endblock %}
+
+
+{% block content %}
+<div class="content">
+	<form name="form1" method="post" action="/cmdb/savedailywork/" >
+		{% csrf_token %}
+				<table id="tab1" class="table">
+					<thead>
+						<tr>
+							<th >选择</th>
+							<th >日期</th>
+							<th >内容</th>
+							<th >一级类别</th>
+							<th >二级类别</th>
+							<th >用时</th>
+							<th >备注</th>
+						</tr>
+					</thead>
+					<tr>
+						<td><input id="sd" type="checkbox" /></td>
+						<td>
+     						<input type="text" class="Wdate" name="date" onclick="WdatePicker()" style="height: 30px;"></input>
+						</td>
+						<td ><textarea name="content" rows="2"></textarea></td>
+						<td style="width: 150px;">
+                            <select name="type" class="form-control" onchange="getsublist(this)">
+								<OPTION >请选择大类 </OPTION>
+								<option>系统部署</option>
+								<option>日常检查</option>
+								<option>供应商管理</option>
+								<option>日常维护</option>
+								<option>故障处理</option>
+								<option>新项目工作</option>
+								<option>文档维护</option>
+								<option>部门工作</option>
+							</select>
+						</td>
+						<td style="width: 150px;">
+                            <select name="subtype" class="form-control" >
+								<OPTION>具体任务类型</OPTION>
+							</select>
+						</td>
+                        <td style="width: 100px;">
+                            <div class="input-group">
+                                <input type="text" name="costname" value="1" class="form-control">
+                                <span class="input-group-addon">h</span>
+                            </div>
+                        </td>
+						<td><textarea name="info" rows="2"></textarea></td>
+
+					</tr>
+
+				</table>
+				<table class="table table-striped  table-hover table-condensed">
+					<tr>
+						<td>
+						<input type="button" name="Submit" value="增加一行"  class="btn btn-info align-left"  id="newBtn" />
+					    <input type="button" name="Submit" value="删除一行" class="btn btn-info align-left"  id="delBtn" />
+					    </td>
+                        <td align="right">
+                             <button class="btn btn-primary align-right">提交日志</button>
+                        </td>
+					</tr>
+				</table>
+	</form>
+</div>
+{% endblock %} 

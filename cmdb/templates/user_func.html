@@ -1,0 +1,62 @@
+{% extends "modhead.html" %}
+{%block title%}
+用户权限管理
+{%endblock%}
+{% block js %}
+<script src="/static/js/jquery.form.js"></script>
+{% endblock %}
+{% block javascript %}
+<script language="javascript" type="text/javascript">
+function updateuserfunc() {
+	$("#updateuserfunc").ajaxSubmit(function(message) {
+	alert("添加成功！");
+	window.location.reload();
+});
+return false;
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="content ">
+	<div class="content col-md-offset-2 col-md-8 shadow" style="margin-top: 50px;">
+		 <div class="page-header col-md-offset-4">
+		 	 <h2>  用户权限管理 </h2>
+		 </div>
+	<form id="updateuserfunc" method="post" action="/cmdb/updatefunc/" class="form-horizontal" role="form">
+		<div class="form-group">
+			<label for="surname" class="col-sm-2 control-label">用户名</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" name="username" value="{{ username }}">
+				</div>
+				<div class="col-sm-offset-2 col-sm-3">
+					<input type="submit" class="btn btn-info" name="usercheck" value="用户检测">
+				</div>
+		</div>
+		{% for info in rs %}
+		<div class="form-group">
+			<label for="surname" class="col-sm-2 control-label">功能</label>
+			<div class="col-sm-4">
+				<label class="checkbox inline">
+					{% if info.3 == "True" %}
+						<input type="checkbox" name="privative" checked value="{{info.0 }}">{{ info.1 }}
+					{% else %}
+						<input type="checkbox" name="privative" value="{{info.0 }}">{{ info.1 }}
+					{% endif %}
+				</label>
+			</div>
+			<div class="col-sm-6">
+				<p class="text-info">所属父模块：&nbsp {{ info.2 }}</p>
+			</div>
+		</div>
+		{% endfor %}
+			<div class="form-group">
+				<div class="col-sm-offset-4 col-sm-6">
+					<input type="submit" class="btn btn-info" value="确认提交">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %} 

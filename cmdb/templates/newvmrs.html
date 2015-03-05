@@ -1,0 +1,12 @@
+{% extends "newmain.html" %} {% block title %} User Serach Result
+{%endblock %} {% block content %}
+<div>
+	<h4>搜索结果</h4>
+</div>
+<div class="content">
+	
+	{% for info in rs %}
+	{{ info }}
+	{% endfor %}
+</div>
+{% endblock %}

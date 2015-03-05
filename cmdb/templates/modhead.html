@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+<link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.css">
+<script src="/static/jquery/dist/jquery.min.js"></script>
+<script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+<meta charset="utf-8">
+<title>{% block title %}{% endblock %}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block css %}{% endblock %}
+{% block js %}{% endblock %}
+{% block javascript %}{% endblock %}
+</head>
+
+
+<body>
+
+	<div class="container">
+		<div class="page-header">
+			<h3>
+				GenScript 运维管理系统 <small>beta 1.0</small>
+			</h3>
+			{% if user %}
+			<p class="text-right"><small>你好,{{ request.session.username  }}&nbsp;&nbsp;<a href="/cmdb/logout/">注销</a></small></p>
+			{% endif %}
+		</div>
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active"><a href="/cmdb/home">工具</a></li>
+			{% for lmode in request.session.lmodes.father_mods %}
+				<li class="dropdown"><a class="dropdown-toggle"data-toggle="dropdown" href="#">{{ lmode.name }}<span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu">
+					{% for submod in lmode.son_mods %}
+							<li><a href={{ submod.url }}>{{ submod.cname }}</a></li>
+					{% endfor %}
+					</ul>
+				</li>
+			{% endfor %}
+		</ul>
+		{% block content %} {% endblock %}
+	</div>
+
+</body>
+
+</html>

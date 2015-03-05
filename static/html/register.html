@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+<meta charset="utf-8">
+<title>Retina Dashboard</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="robots" content="" />
+<meta name="viewport"
+	content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+<link rel="stylesheet" href="/static/css/style.css" media="all" />
+</head>
+<script language="javascript" type="text/javascript">
+function saveReport() {
+$("#saveregister").ajaxSubmit(function(message) {
+	alert("登记成功，请准时参加我们的婚礼！");
+});
+return false; // 必须返回false，否则表单会自己再做一次提交操作，并且页面跳转
+} 
+</script>
+<body>
+	<form id="saveregister" action="/cmdb/reg/" method="post" onsubmit="return saveReport();"> 
+		<input type="text" name="title"/>
+		<input type="textarea" name="content"/>
+		<input type="submit" value="保存报告"/> 
+	</form>
+	<script src="/static/js/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="http://malsup.github.io/jquery.form.js"></script>
+</body>
+</html>

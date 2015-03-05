@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+<link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.css">
+<script src="/static/jquery/dist/jquery.min.js"></script>
+<script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+<meta charset="utf-8">
+<title>{% block title %}{% endblock %}</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block css %}{% endblock %}
+{% block js %}{% endblock %}
+{% block javascript %}{% endblock %}
+</head>
+
+
+<body>
+
+	<div class="container">
+		<div class="page-header">
+			<h3>
+				GenScript 运维管理系统 <small>beta 1.0</small>
+			</h3>
+			{% if user %}
+			<p class="text-right"><small>你好,{{ user.username  }}&nbsp;&nbsp;<a href="/cmdb/logout/">注销</a></small></p>
+			{% endif %}
+		</div>
+		<ul class="nav nav-tabs" role="tablist">
+			<li class="active"><a href="/cmdb/home">Home</a></li>
+			<li class="dropdown"><a class="dropdown-toggle"
+				data-toggle="dropdown" href="#">报价系统 <span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="/cmdb/newbj/">新建报价</a>
+					</li>
+					<li><a href="/cmdb/bjlist/">往月报价</a>
+					</li>
+				</ul></li>
+			<li class="dropdown"><a class="dropdown-toggle"
+				data-toggle="dropdown" href="#">虚拟机管理 <span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="/cmdb/newvm/">新建虚拟机</a>
+					</li>
+					<li><a href="#">虚拟机信息</a>
+					</li>
+				</ul></li>
+			<li class="dropdown"><a class="dropdown-toggle"
+				data-toggle="dropdown" href="#">权限管理 <span class="caret"></span></a>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#">####</a>
+					</li>
+					<li><a href="#">####</a>
+					</li>
+				</ul></li>
+			<li><a href="#">个人信息</a></li>
+			<li><a href="/admin">后台管理</a></li>
+		</ul>
+		<div class="row">
+			<div class="col-md-12">
+				{% block content %} {% endblock %} 
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

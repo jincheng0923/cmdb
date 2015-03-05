@@ -1,0 +1,95 @@
+{% extends "index_base.html" %}
+{% block css %}
+<style type="text/css">
+.line{margin-bottom:20px;}
+.copy-tips{position:fixed;z-index:999;bottom:50%;left:50%;margin:0 0 -20px -80px;background-color:rgba(0, 0, 0, 0.2);filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#30000000, endColorstr=#30000000);padding:6px;}
+.copy-tips-wrap{padding:10px 20px;text-align:center;border:1px solid #F4D9A6;background-color:#FFFDEE;font-size:14px;}
+</style>
+{% endblock %}
+{% block js%}
+<script type="text/javascript" src="/static/js/ZeroClipboard/jquery.js"></script>
+<script type="text/javascript" src="/static/js/ZeroClipboard/jquery.zclip.js"></script>
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+$(document).ready(function(){
+/* 定义所有class为copy标签，点击后可复制被点击对象的文本 */
+    $(".copy").zclip({
+        path: "ZeroClipboard.swf",
+        copy: function(){
+        return $(this).text();
+        },
+        beforeCopy:function(){/* 按住鼠标时的操作 */
+            $(this).css("color","orange");
+        },
+        afterCopy:function(){/* 复制成功后的操作 */
+            var $copysuc = $("<div class='copy-tips'><div class='copy-tips-wrap'>复制成功</div></div>");
+            $("body").find(".copy-tips").remove().end().append($copysuc);
+            $(".copy-tips").fadeOut(3000);
+        }
+    });
+/* 定义所有class为copy-input标签，点击后可复制class为input的文本 */
+    $(".copy-input").zclip({
+        path: "ZeroClipboard.swf",
+        copy: function(){
+        return $(this).parent().find(".input").val();
+        },
+        afterCopy:function(){/* 复制成功后的操作 */
+            var $copysuc = $("<div class='copy-tips'><div class='copy-tips-wrap'>复制成功</div></div>");
+            $("body").find(".copy-tips").remove().end().append($copysuc);
+            $(".copy-tips").fadeOut(3000);
+        }
+    });
+});
+</script>
+{% endblock %}
+{% block title %}随机密码生成器
+{% endblock %}
+{% block rs %}
+<div>
+
+<form action="/cmdb/randompasswd/" method="post" class="form-horizontal"
+	role="form">
+	<div class="form-group">
+			<label for="surname" class="col-sm-2 control-label">密码位数</label>
+			<div class="col-sm-2">
+					<select class="form-control" name="bit">
+						<option>6</option>
+						<option>8</option>
+						<option>10</option>
+						<option>12</option>
+					</select>
+		   </div>
+			<label for="surname" class="col-sm-2 control-label">密码个数</label>
+			<div class="col-sm-2">
+					<select class="form-control" name="num">
+						<option>1</option>
+						<option>2</option>
+						<option>4</option>
+						<option>8</option>
+					</select>
+		   </div>
+				<div class="col-sm-2">
+					<button type="submit" class="btn btn-info">生成</button>
+				</div>
+	</div>
+
+
+</form>
+	{% if passwdlist %}
+	<div class="col-sm-4 col-sm-offset-2">
+		<table  class="table table-hover " id="usertable">
+			<tbody>
+				{% for passwd in passwdlist %}
+				<tr>
+					<td><input type="text" value="{{ passwd }}"></td>
+					<!--<td ><a href="#none" class="copy-input">点击复制单中的文本</a><input type="text" class="input" value="{{ passwd }}"></td>-->
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endif %}
+
+</div>
+{% endblock %}
